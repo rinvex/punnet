@@ -12,13 +12,18 @@ ENV TZ ${TZ}
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
+COPY ./php.ini /usr/local/etc/php/php.ini
+COPY ./xdebug.ini /usr/local/etc/php/xdebug.ini
+COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends git zip \
     apt-utils nano libz-dev libpq-dev libpng-dev \
     libjpeg-dev libmcrypt-dev libfreetype6-dev \
     libzip-dev libicu-dev jpegoptim optipng pngquant gifsicle \
     python python-pip python-dev build-essential \
-    libmagickwand-dev imagemagick \
+    libmagickwand-dev imagemagick libxml2-dev libxslt1-dev \
+    libc-client-dev libkrb5-dev \
     && python -m pip install --upgrade pip  \
     && python -m pip install --upgrade virtualenv
 
@@ -29,14 +34,10 @@ RUN pecl channel-update pecl.php.net \
     && docker-php-ext-configure gd \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2 \
-    && docker-php-ext-install zip gd pdo_mysql \
-    exif opcache bcmath pcntl mysqli intl \
-    && docker-php-ext-enable redis xdebug imagick
-
-
-COPY ./php.ini /usr/local/etc/php/php.ini/php.ini
-COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY ./xdebug.ini /usr/local/etc/php/php.ini/xdebug.ini
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-install zip gd pdo_mysql calendar imap \
+    exif opcache bcmath mysqli intl sockets gettext soap xsl \
+    && docker-php-ext-enable redis imagick xdebug
 
 # Install Composer
 ENV COMPOSER_DIR /root/.composer

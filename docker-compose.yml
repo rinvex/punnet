@@ -38,7 +38,6 @@ services:
         args:
           - PHP_VERSION=${PHP_VERSION}
       volumes:
-        - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
         - ../.storage:/var/tmp
       expose:
