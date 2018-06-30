@@ -39,7 +39,6 @@ services:
           - PHP_VERSION=${PHP_VERSION}
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-        - ../.storage:/var/tmp
       expose:
         - "9000"
       extra_hosts:
