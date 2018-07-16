@@ -17,7 +17,9 @@ COPY ./xdebug.ini /usr/local/etc/php/xdebug.ini
 COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git zip \
+    && apt-get install -y --no-install-recommends \
+    git zip unzip curl ntp locales whois dnsutils \
+    libmcrypt4 libpcre3-dev bash-completion locate \
     apt-utils nano libz-dev libpq-dev libpng-dev \
     libjpeg-dev libmcrypt-dev libfreetype6-dev \
     libzip-dev libicu-dev jpegoptim optipng pngquant gifsicle \
