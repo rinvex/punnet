@@ -15,6 +15,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 COPY ./php.ini /usr/local/etc/php/php.ini
 COPY ./xdebug.ini /usr/local/etc/php/xdebug.ini
 COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
+COPY ./.bashrc /root/.bashrc
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -49,7 +50,7 @@ RUN pecl channel-update pecl.php.net \
 ENV COMPOSER_DIR /root/.composer
 COPY ./composer.json $COMPOSER_DIR/composer.json
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && printf "\nPATH=\"$COMPOSER_DIR/vendor/bin:\$PATH\"\n" | tee -a ~/.bashrc \
+    && printf "\nPATH=\"$COMPOSER_DIR/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc \
     && composer global install
 
 # Node / NVM:
@@ -65,12 +66,12 @@ RUN mkdir -p $NVM_DIR \
     && nvm alias ${NODE_VERSION}
 
 # Wouldn't execute when added to the RUN statement in the above block
-# Source NVM when loading bash since ~/.profile isn't loaded on non-login shell
-RUN echo "" >> ~/.bashrc \
-    && echo 'export NVM_DIR="$NVM_DIR/.nvm"' >> ~/.bashrc \
-    && echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> ~/.bashrc \
-    && printf "\nPATH=\"$NVM_DIR/vendor/bin:\$PATH\"\n" | tee -a ~/.bashrc \
-    && exec bash && . ~/.bashrc && npm install -g svgo
+# Source NVM when loading bash since /root/.profile isn't loaded on non-login shell
+RUN echo "" >> /root/.bashrc \
+    && echo 'export NVM_DIR="$NVM_DIR/.nvm"' >> /root/.bashrc \
+    && echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /root/.bashrc \
+    && printf "\nPATH=\"$NVM_DIR/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc \
+    && exec bash && . /root/.bashrc && npm install -g svgo
 
 # Clean up
 RUN apt-get clean && rm -rf /tmp/pear && \
