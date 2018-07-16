@@ -29,6 +29,10 @@ RUN apt-get update \
     && python -m pip install --upgrade pip  \
     && python -m pip install --upgrade virtualenv
 
+# Set Locale (after installing locales)
+RUN echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
+RUN locale-gen en_US.UTF-8
+
 RUN pecl channel-update pecl.php.net \
     && pecl install -o -f redis xdebug imagick \
     && docker-php-ext-configure zip --with-libzip \
