@@ -16,6 +16,7 @@ services:
 
 ### WORKSPACE ###
     workspace:
+      hostname: workspace
       build:
         context: ./workspace
         args:
@@ -33,6 +34,7 @@ services:
 
 ### PHP-FPM ###
     php-fpm:
+      hostname: php-fpm
       build:
         context: ./php-fpm
         args:
@@ -48,6 +50,7 @@ services:
 
 ### NGINX ###
     nginx:
+      hostname: nginx
       build:
         context: ./nginx
         args:
@@ -68,6 +71,7 @@ services:
 
     ### MYSQL ###
     mysql:
+      hostname: mysql
       build:
         context: ./mysql
         args:
@@ -85,6 +89,7 @@ services:
 
 ### REDIS ###
     redis:
+      hostname: redis
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
@@ -95,6 +100,7 @@ services:
 
 ### PORTAINER ###
     portainer:
+      hostname: portainer
       build:
         context: ./portainer
       volumes:
