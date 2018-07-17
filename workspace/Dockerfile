@@ -26,7 +26,7 @@ RUN apt-get update \
     libzip-dev libicu-dev jpegoptim optipng pngquant gifsicle \
     python python-pip python-dev build-essential \
     libmagickwand-dev imagemagick libxml2-dev libxslt1-dev \
-    libc-client-dev libkrb5-dev \
+    libc-client-dev libkrb5-dev openssh-client \
     && python -m pip install --upgrade pip  \
     && python -m pip install --upgrade virtualenv
 
