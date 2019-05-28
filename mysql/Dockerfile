@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends nano && rm -rf 
 ARG TZ=UTC
 ENV TZ ${TZ}
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime \
-	&& echo $TZ > /etc/timezone
+    && echo $TZ > /etc/timezone
 
 # Fix filesystem permissions
 RUN chown -R mysql:root /var/lib/mysql/
