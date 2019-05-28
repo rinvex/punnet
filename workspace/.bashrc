@@ -210,9 +210,9 @@ function gz() {
 # Usage: `json '{"foo":42}'` or `echo '{"foo":42}' | json`
 function json() {
     if [ -t 0 ]; then # argument
-        python -mjson.tool <<< "$*" | pygmentize -l javascript;
+        python3 -mjson.tool <<< "$*" | pygmentize -l javascript;
     else # pipe
-        python -mjson.tool | pygmentize -l javascript;
+        python3 -mjson.tool | pygmentize -l javascript;
     fi;
 }
 

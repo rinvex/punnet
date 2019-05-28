@@ -1,4 +1,4 @@
-ARG REDIS_VERSION=4.0
+ARG REDIS_VERSION=5.0
 FROM redis:${REDIS_VERSION}
 
 LABEL maintainer="Abdelrahman Omran <me@omranic.com>"

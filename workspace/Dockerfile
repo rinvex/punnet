@@ -1,4 +1,4 @@
-ARG PHP_VERSION=7.2-fpm
+ARG PHP_VERSION=7.3-fpm
 FROM php:${PHP_VERSION}
 
 LABEL maintainer="Abdelrahman Omran <me@omranic.com>"
@@ -24,11 +24,11 @@ RUN apt-get update \
     apt-utils nano libz-dev libpq-dev libpng-dev \
     libjpeg-dev libmcrypt-dev libfreetype6-dev \
     libzip-dev libicu-dev jpegoptim optipng pngquant gifsicle \
-    python python-pip python-dev build-essential \
+    python3 python3-pip python3-dev build-essential \
     libmagickwand-dev imagemagick libxml2-dev libxslt1-dev \
     libc-client-dev libkrb5-dev openssh-client \
-    && python -m pip install --upgrade pip  \
-    && python -m pip install --upgrade virtualenv
+    && python3 -m pip install --upgrade pip  \
+    && python3 -m pip install --upgrade virtualenv
 
 # Set Locale (after installing locales)
 RUN echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
