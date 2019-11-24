@@ -31,7 +31,7 @@ RUN pecl channel-update pecl.php.net \
     --with-jpeg-dir=/usr/lib \
     --with-freetype-dir=/usr/include/freetype2 \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install zip gd pdo_mysql calendar imap \
+    && docker-php-ext-install zip gd pdo_mysql calendar imap pcntl \
     exif opcache bcmath mysqli intl sockets gettext soap xsl \
     && docker-php-ext-enable redis imagick
 
