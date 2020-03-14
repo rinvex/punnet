@@ -36,11 +36,8 @@ RUN locale-gen en_US.UTF-8
 
 RUN pecl channel-update pecl.php.net \
     && pecl install -o -f redis xdebug imagick \
-    && docker-php-ext-configure zip --with-libzip \
     && docker-php-ext-configure intl \
-    && docker-php-ext-configure gd \
-    --with-jpeg-dir=/usr/lib \
-    --with-freetype-dir=/usr/include/freetype2 \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install zip gd pdo_mysql calendar imap pcntl \
     exif opcache bcmath mysqli intl sockets gettext soap xsl \
