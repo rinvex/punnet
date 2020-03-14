@@ -24,7 +24,7 @@ RUN apt-get update \
     apt-utils nano libz-dev libpq-dev libpng-dev \
     libjpeg-dev libmcrypt-dev libfreetype6-dev \
     libzip-dev libicu-dev jpegoptim optipng pngquant gifsicle \
-    python3 python3-pip python3-dev build-essential \
+    python3 python3-pip python3-dev python3-setuptools build-essential \
     libmagickwand-dev imagemagick libxml2-dev libxslt1-dev \
     libc-client-dev libkrb5-dev openssh-client \
     && python3 -m pip install --upgrade pip  \
