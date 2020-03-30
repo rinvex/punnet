@@ -18,8 +18,8 @@ COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./.bashrc /root/.bashrc
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    git zip unzip curl ntp locales whois dnsutils \
+    && apt-get install -y --no-install-recommends locales\
+    git git-flow zip unzip curl ntp whois dnsutils \
     libmcrypt4 libpcre3-dev bash-completion locate \
     apt-utils nano libz-dev libpq-dev libpng-dev \
     libjpeg-dev libmcrypt-dev libfreetype6-dev \
