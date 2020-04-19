@@ -3,9 +3,6 @@ FROM mysql:${MYSQL_VERSION}
 
 LABEL maintainer="Abdelrahman Omran <me@omranic.com>"
 
-# Install nano
-RUN apt-get update && apt-get install -y --no-install-recommends nano && rm -rf /var/lib/apt/lists/*
-
 # Set Timezone
 ARG TZ=${TZ}
 ENV TZ ${TZ}
