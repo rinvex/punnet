@@ -1,4 +1,4 @@
-ARG NGINX_VERSION=1.17
+ARG NGINX_VERSION=${NGINX_VERSION}
 FROM nginx:${NGINX_VERSION}
 
 LABEL maintainer="Abdelrahman Omran <me@omranic.com>"
