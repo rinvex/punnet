@@ -20,7 +20,7 @@ services:
       build:
         context: ./workspace
         args:
-          - TZ=${WORKSPACE_TIMEZONE}
+          - TZ=${TZ}
           - PHP_VERSION=${PHP_VERSION}
           - NODE_VERSION=${WORKSPACE_NODE_VERSION}
       volumes:
@@ -38,6 +38,7 @@ services:
       build:
         context: ./php-fpm
         args:
+          - TZ=${TZ}
           - PHP_VERSION=${PHP_VERSION}
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
@@ -75,7 +76,7 @@ services:
       build:
         context: ./mysql
         args:
-          - TZ=${WORKSPACE_TIMEZONE}
+          - TZ=${TZ}
           - MYSQL_VERSION=${MYSQL_VERSION}
       environment:
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
