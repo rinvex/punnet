@@ -14,7 +14,7 @@ volumes:
 
 services:
 
-### WORKSPACE ###
+    ### WORKSPACE ###
     workspace:
       hostname: workspace
       build:
@@ -32,7 +32,7 @@ services:
         - frontend
         - backend
 
-### PHP-FPM ###
+    ### PHP-FPM ###
     php-fpm:
       hostname: php-fpm
       build:
@@ -42,13 +42,13 @@ services:
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
       expose:
-        - "9000"
+        - 9000
       extra_hosts:
         - "dockerhost:${DOCKER_HOST_IP}"
       networks:
         - backend
 
-### NGINX ###
+    ### NGINX ###
     nginx:
       hostname: nginx
       build:
@@ -61,8 +61,8 @@ services:
         - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
         - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
       ports:
-        - "${NGINX_HOST_HTTP_PORT}:80"
-        - "${NGINX_HOST_HTTPS_PORT}:443"
+        - ${NGINX_HOST_HTTP_PORT}:80
+        - ${NGINX_HOST_HTTPS_PORT}:443
       depends_on:
         - php-fpm
       networks:
@@ -83,22 +83,22 @@ services:
         - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
         - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
       ports:
-        - "${MYSQL_PORT}:3306"
+        - ${MYSQL_PORT}:3306
       networks:
         - backend
 
-### REDIS ###
+    ### REDIS ###
     redis:
       hostname: redis
       build: ./redis
       volumes:
         - ${DATA_PATH_HOST}/redis:/data
       ports:
-        - "${REDIS_PORT}:6379"
+        - ${REDIS_PORT}:6379
       networks:
         - backend
 
-### PORTAINER ###
+    ### PORTAINER ###
     portainer:
       hostname: portainer
       build:
@@ -107,4 +107,4 @@ services:
         - ${DATA_PATH_HOST}/portainer_data:/data
         - /var/run/docker.sock:/var/run/docker.sock
       ports:
-        - "${PORTAINER_PORT}:9000"
+        - ${PORTAINER_PORT}:9000

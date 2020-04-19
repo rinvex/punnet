@@ -50,14 +50,14 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
     && printf "\nPATH=\"$COMPOSER_DIR/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc \
     && composer global install
 
-# Node / NVM:
+# Node / NVM
 ARG NODE_VERSION=stable
 ENV NODE_VERSION ${NODE_VERSION}
 ENV NVM_DIR /root/.nvm
 
-RUN mkdir -p $NVM_DIR \
+RUN mkdir -p ${NVM_DIR} \
     && curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash \
-    && . $NVM_DIR/nvm.sh \
+    && . ${NVM_DIR}/nvm.sh \
     && nvm install ${NODE_VERSION} \
     && nvm use ${NODE_VERSION} \
     && nvm alias ${NODE_VERSION}
@@ -65,9 +65,9 @@ RUN mkdir -p $NVM_DIR \
 # Wouldn't execute when added to the RUN statement in the above block
 # Source NVM when loading bash since /root/.profile isn't loaded on non-login shell
 RUN echo "" >> /root/.bashrc \
-    && echo 'export NVM_DIR="$NVM_DIR/.nvm"' >> /root/.bashrc \
-    && echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /root/.bashrc \
-    && printf "\nPATH=\"$NVM_DIR/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc \
+    && echo 'export NVM_DIR="${NVM_DIR}/.nvm"' >> /root/.bashrc \
+    && echo '[ -s "${NVM_DIR}/nvm.sh" ] && . "${NVM_DIR}/nvm.sh"  # This loads nvm' >> /root/.bashrc \
+    && printf "\nPATH=\"${NVM_DIR}/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc \
     && exec bash && . /root/.bashrc && npm install -g svgo
 
 # Clean up
