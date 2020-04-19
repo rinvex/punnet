@@ -5,11 +5,11 @@ LABEL maintainer="Abdelrahman Omran <me@omranic.com>"
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
 
-# Install nano
-RUN apt-get update && apt-get install -y --no-install-recommends nano && rm -rf /var/lib/apt/lists/*
+ARG PHP_UPSTREAM_PORT=${PHP_UPSTREAM_PORT}
+ARG PHP_UPSTREAM_CONTAINER=${PHP_UPSTREAM_CONTAINER}
 
-ARG PHP_UPSTREAM_PORT=9000
-ARG PHP_UPSTREAM_CONTAINER=php-fpm
+# ensure www-data user exists
+RUN adduser -u 82 -D -S -G www-data www-data
 
 # Set upstream conf and remove the default conf
 RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf \
