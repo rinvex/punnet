@@ -25,6 +25,10 @@ services:
       networks:
         - frontend
         - backend
+      dns:
+        - 1.1.1.1
+        - 8.8.8.8
+        - 9.9.9.9
 
     ### PHP-FPM ###
     php-fpm:
@@ -42,6 +46,10 @@ services:
         - "dockerhost:${DOCKER_HOST_IP}"
       networks:
         - backend
+      dns:
+        - 1.1.1.1
+        - 8.8.8.8
+        - 9.9.9.9
 
     ### NGINX ###
     nginx:
@@ -64,6 +72,10 @@ services:
       networks:
         - frontend
         - backend
+      dns:
+        - 1.1.1.1
+        - 8.8.8.8
+        - 9.9.9.9
 
     ### MYSQL ###
     mysql:
@@ -82,6 +94,10 @@ services:
         - ${MYSQL_PORT}:3306
       networks:
         - backend
+      dns:
+        - 1.1.1.1
+        - 8.8.8.8
+        - 9.9.9.9
 
     ### REDIS ###
     redis:
@@ -96,6 +112,10 @@ services:
         - ${REDIS_PORT}:6379
       networks:
         - backend
+      dns:
+        - 1.1.1.1
+        - 8.8.8.8
+        - 9.9.9.9
 
     ### PORTAINER ###
     portainer:
@@ -110,3 +130,7 @@ services:
       networks:
         - frontend
         - backend
+      dns:
+        - 1.1.1.1
+        - 8.8.8.8
+        - 9.9.9.9
