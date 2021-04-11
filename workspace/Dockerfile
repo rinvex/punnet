@@ -90,6 +90,10 @@ RUN echo "" >> /root/.bashrc \
     && printf "\nPATH=\"${NVM_DIR}/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc \
     && exec bash && . /root/.bashrc && npm install -g svgo
 
+
+# Update nano config
+RUN sed -i "s/# set linenumbers/set linenumbers/" /etc/nanorc
+
 # Clean up
 RUN apt-get clean && rm -rf /tmp/pear && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
