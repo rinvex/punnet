@@ -66,10 +66,9 @@ RUN docker-php-ext-enable imagick
 
 # Install Composer
 ENV COMPOSER_DIR /root/.composer
-COPY ./composer.json $COMPOSER_DIR/composer.json
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && printf "\nPATH=\"$COMPOSER_DIR/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc \
-    && composer global install
+    && printf "\nPATH=\"$COMPOSER_DIR/vendor/bin:\$PATH\"\n" | tee -a /root/.bashrc
+
 
 # Node / NVM
 ARG NODE_VERSION=stable
