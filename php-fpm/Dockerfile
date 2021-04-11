@@ -18,19 +18,40 @@ COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     apt-utils nano libz-dev libpq-dev libpng-dev \
-    libjpeg-dev libmcrypt-dev libfreetype6-dev \
+    git libjpeg-dev libmcrypt-dev libfreetype6-dev \
     libzip-dev libicu-dev jpegoptim optipng pngquant gifsicle \
     libmagickwand-dev imagemagick libxml2-dev libxslt1-dev \
     libc-client-dev libkrb5-dev
 
 RUN pecl channel-update pecl.php.net \
-    && pecl install -o -f redis imagick \
+    && pecl install -o -f redis \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install zip gd pdo_mysql calendar imap pcntl \
     exif opcache bcmath mysqli intl sockets gettext soap xsl \
-    && docker-php-ext-enable redis imagick
+    && docker-php-ext-enable redis
+
+
+# Start Workaround: Get Imagick Extension
+RUN git clone https://github.com/Imagick/imagick \
+    && cd imagick \
+    && phpize && ./configure \
+    && make \
+    && make install
+
+# Move the imagick extension
+RUN cd imagick \
+    && EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )" \
+    && if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi \
+    && cp ./modules/imagick.so "${EXTENSION_DIR}/imagick.so" \
+    && cd ../ \
+    && rm -rf imagick
+
+# Enable the module
+RUN docker-php-ext-enable imagick
+# End Workaround: Get Imagick Extension
+
 
 # Clean up
 RUN apt-get clean && rm -rf /tmp/pear && \

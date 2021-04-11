@@ -35,13 +35,34 @@ RUN echo "LC_ALL=en_US.UTF-8" >> /etc/default/locale
 RUN locale-gen en_US.UTF-8
 
 RUN pecl channel-update pecl.php.net \
-    && pecl install -o -f redis xdebug imagick \
+    && pecl install -o -f redis xdebug \
     && docker-php-ext-configure intl \
     && docker-php-ext-configure gd --with-jpeg --with-freetype \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install zip gd pdo_mysql calendar imap pcntl \
     exif opcache bcmath mysqli intl sockets gettext soap xsl \
-    && docker-php-ext-enable redis imagick xdebug
+    && docker-php-ext-enable redis xdebug
+
+
+# Start Workaround: Get Imagick Extension
+RUN git clone https://github.com/Imagick/imagick \
+    && cd imagick \
+    && phpize && ./configure \
+    && make \
+    && make install
+
+# Move the imagick extension
+RUN cd imagick \
+    && EXTENSION_DIR="$( php -i | grep ^extension_dir | awk -F '=>' '{print $2}' | xargs )" \
+    && if [ ! -d "${EXTENSION_DIR}" ]; then mkdir -p "${EXTENSION_DIR}"; fi \
+    && cp ./modules/imagick.so "${EXTENSION_DIR}/imagick.so" \
+    && cd ../ \
+    && rm -rf imagick
+
+# Enable the module
+RUN docker-php-ext-enable imagick
+# End Workaround: Get Imagick Extension
+
 
 # Install Composer
 ENV COMPOSER_DIR /root/.composer
