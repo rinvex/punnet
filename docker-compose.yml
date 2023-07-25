@@ -89,6 +89,7 @@ services:
           - TZ=${TZ}
           - MYSQL_VERSION=${MYSQL_VERSION}
       environment:
+        - MYSQL_ROOT_HOST='%'
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       volumes:
         - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
