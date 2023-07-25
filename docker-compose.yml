@@ -99,6 +99,28 @@ services:
         - 8.8.8.8
         - 9.9.9.9
 
+#    ### MARIADB ###
+#    mariadb:
+#      hostname: mariadb
+#      build:
+#        context: ./mariadb
+#        args:
+#          - TZ=${TZ}
+#          - MARIADB_VERSION=${MARIADB_VERSION}
+#      environment:
+#        - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+#      volumes:
+#        - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
+#        - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+#      ports:
+#        - ${MARIADB_PORT}:3306
+#      networks:
+#        - backend
+#      dns:
+#        - 1.1.1.1
+#        - 8.8.8.8
+#        - 9.9.9.9
+
     ### REDIS ###
     redis:
       hostname: redis
