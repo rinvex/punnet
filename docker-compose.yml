@@ -139,20 +139,20 @@ services:
         - 8.8.8.8
         - 9.9.9.9
 
-    ### PORTAINER ###
-    portainer:
-      hostname: portainer
-      build:
-        context: ./portainer
-      volumes:
-        - ${DATA_PATH_HOST}/portainer_data:/data
-        - /var/run/docker.sock:/var/run/docker.sock
-      ports:
-        - ${PORTAINER_PORT}:9000
-      networks:
-        - frontend
-        - backend
-      dns:
-        - 1.1.1.1
-        - 8.8.8.8
-        - 9.9.9.9
+#    ### PORTAINER ###
+#    portainer:
+#      hostname: portainer
+#      build:
+#        context: ./portainer
+#      volumes:
+#        - ${DATA_PATH_HOST}/portainer_data:/data
+#        - /var/run/docker.sock:/var/run/docker.sock
+#      ports:
+#        - ${PORTAINER_PORT}:9000
+#      networks:
+#        - frontend
+#        - backend
+#      dns:
+#        - 1.1.1.1
+#        - 8.8.8.8
+#        - 9.9.9.9
