@@ -1,9 +1,5 @@
-version: '3'
-
 networks:
-  frontend:
-    driver: ${NETWORKS_DRIVER}
-  backend:
+  punnet:
     driver: ${NETWORKS_DRIVER}
 
 services:
@@ -19,16 +15,9 @@ services:
           - NODE_VERSION=${NODE_VERSION}
       volumes:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-      extra_hosts:
-        - "dockerhost:${DOCKER_HOST_IP}"
       tty: true
       networks:
-        - frontend
-        - backend
-      dns:
-        - 1.1.1.1
-        - 8.8.8.8
-        - 9.9.9.9
+        - punnet
       ports:
         - 8089:8089
         - 8090:8090
@@ -45,14 +34,8 @@ services:
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
       expose:
         - 9000
-      extra_hosts:
-        - "dockerhost:${DOCKER_HOST_IP}"
       networks:
-        - backend
-      dns:
-        - 1.1.1.1
-        - 8.8.8.8
-        - 9.9.9.9
+        - punnet
 
     ### NGINX ###
     nginx:
@@ -73,12 +56,9 @@ services:
       depends_on:
         - php-fpm
       networks:
-        - frontend
-        - backend
-      dns:
-        - 1.1.1.1
-        - 8.8.8.8
-        - 9.9.9.9
+        - punnet
+      labels:
+        - dev.orbstack.domains=phpmyadmin.local,*.rinvex.local,*.tenant.local,*.dev.local
 
     ### MYSQL ###
     mysql:
@@ -97,11 +77,7 @@ services:
       ports:
         - ${MYSQL_PORT}:3306
       networks:
-        - backend
-      dns:
-        - 1.1.1.1
-        - 8.8.8.8
-        - 9.9.9.9
+        - punnet
 
 #    ### MARIADB ###
 #    mariadb:
@@ -119,11 +95,7 @@ services:
 #      ports:
 #        - ${MARIADB_PORT}:3306
 #      networks:
-#        - backend
-#      dns:
-#        - 1.1.1.1
-#        - 8.8.8.8
-#        - 9.9.9.9
+#        - punnet
 
     ### REDIS ###
     redis:
@@ -137,11 +109,7 @@ services:
       ports:
         - ${REDIS_PORT}:6379
       networks:
-        - backend
-      dns:
-        - 1.1.1.1
-        - 8.8.8.8
-        - 9.9.9.9
+        - punnet
 
 #    ### PORTAINER ###
 #    portainer:
@@ -155,8 +123,4 @@ services:
 #        - ${PORTAINER_PORT}:9000
 #      networks:
 #        - frontend
-#        - backend
-#      dns:
-#        - 1.1.1.1
-#        - 8.8.8.8
-#        - 9.9.9.9
+#        - punnet

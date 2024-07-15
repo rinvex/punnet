@@ -3,7 +3,7 @@ server {
     listen 80;
     listen [::]:80;
 
-    server_name project.organization.test;
+    server_name project.organization.local;
     root /var/www/organization/project/public;
     index index.php index.html index.htm;
 
