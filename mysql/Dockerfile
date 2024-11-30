@@ -1,7 +1,5 @@
-ARG MYSQL_VERSION=${MYSQL_VERSION}
+ARG MYSQL_VERSION=latest
 FROM mysql/mysql-server:${MYSQL_VERSION}
-
-LABEL maintainer="Abdelrahman Omran <me@omranic.com>"
 
 # Set Timezone
 ARG TZ=${TZ}
@@ -13,4 +11,4 @@ RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime \
 RUN chown -R mysql:root /var/lib/mysql/
 
 # Copy config file
-COPY my.cnf /etc/mysql/conf.d/my.cnf
+COPY ./my.cnf /etc/mysql/conf.d/my.cnf

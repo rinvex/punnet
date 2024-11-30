@@ -73,10 +73,10 @@ Let's see how easy it is to install **NGINX**, **PHP**, **Composer**, **MySQL**,
     cp .env.example .env
     ```
     
-    At the top of your docker `.env` file, change the `APP_CODE_PATH_HOST` variable to your project path:
+    At the top of your docker `.env` file, change the `WEB_DATA_PATH` variable to your project path:
 
     ```
-    APP_CODE_PATH_HOST=../project-a/
+    WEB_DATA_PATH=../project-a/
     ```
 
     Make sure to replace `project-a` with your project folder name.

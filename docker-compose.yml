@@ -14,7 +14,8 @@ services:
           - PHP_VERSION=${PHP_VERSION}
           - NODE_VERSION=${NODE_VERSION}
       volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+        - ${PHP_CONFIG_PATH}:/usr/local/etc
+        - ${WEB_DATA_PATH}:/var/www:cached
       tty: true
       networks:
         - punnet
@@ -31,9 +32,10 @@ services:
           - TZ=${TZ}
           - PHP_VERSION=${PHP_VERSION}
       volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+        - ${PHP_CONFIG_PATH}:/usr/local/etc
+        - ${WEB_DATA_PATH}:/var/www:cached
       expose:
-        - 9000
+        - ${PHP_UPSTREAM_PORT}
       networks:
         - punnet
 
@@ -47,9 +49,9 @@ services:
           - PHP_UPSTREAM_PORT=${PHP_UPSTREAM_PORT}
           - PHP_UPSTREAM_CONTAINER=${PHP_UPSTREAM_CONTAINER}
       volumes:
-        - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-        - ${NGINX_SITES_PATH}:/etc/nginx/sites-available
-        - ${NGINX_HOST_LOG_PATH}:/var/log/nginx
+        - ${WEB_DATA_PATH}:/var/www:cached
+        - ${NGINX_LOG_PATH}:/var/log/nginx/
+        - ${NGINX_CONFIG_PATH}:/etc/nginx/
       ports:
         - ${NGINX_HOST_HTTP_PORT}:80
         - ${NGINX_HOST_HTTPS_PORT}:443
@@ -58,7 +60,7 @@ services:
       networks:
         - punnet
       labels:
-        - dev.orbstack.domains=phpmyadmin.local,*.rinvex.local,*.tenant.local,*.dev.local
+        - dev.orbstack.domains=${LOCAL_DOMAINS}
 
     ### MYSQL ###
     mysql:
@@ -72,55 +74,52 @@ services:
         - MYSQL_ROOT_HOST='%'
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       volumes:
-        - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
+        - ${MYSQL_DATA_PATH}:/var/lib/mysql
         - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
       ports:
         - ${MYSQL_PORT}:3306
       networks:
         - punnet
 
-#    ### MARIADB ###
-#    mariadb:
-#      hostname: mariadb
-#      build:
-#        context: ./mariadb
-#        args:
-#          - TZ=${TZ}
-#          - MARIADB_VERSION=${MARIADB_VERSION}
-#      environment:
-#        - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
-#      volumes:
-#        - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
-#        - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
-#      ports:
-#        - ${MARIADB_PORT}:3306
-#      networks:
-#        - punnet
-
-    ### REDIS ###
+  ### REDIS ###
     redis:
       hostname: redis
       build:
-          context: ./redis
-          args:
-            - REDIS_VERSION=${REDIS_VERSION}
+        context: ./redis
+        args:
+          - REDIS_VERSION=${REDIS_VERSION}
       volumes:
-        - ${DATA_PATH_HOST}/redis:/data
+        - ${REDIS_DATA_PATH}:/data
       ports:
         - ${REDIS_PORT}:6379
       networks:
         - punnet
 
-#    ### PORTAINER ###
-#    portainer:
-#      hostname: portainer
-#      build:
-#        context: ./portainer
-#      volumes:
-#        - ${DATA_PATH_HOST}/portainer_data:/data
-#        - /var/run/docker.sock:/var/run/docker.sock
-#      ports:
-#        - ${PORTAINER_PORT}:9000
-#      networks:
-#        - frontend
-#        - punnet
+    ### MARIADB ###
+    mariadb:
+      hostname: mariadb
+      build:
+        context: ./mariadb
+        args:
+          - TZ=${TZ}
+          - MARIADB_VERSION=${MARIADB_VERSION}
+      environment:
+        - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      volumes:
+        - ${MARIA_DATA_PATH}:/var/lib/mysql
+        - ${MARIADB_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+      ports:
+        - ${MARIADB_PORT}:3306
+      networks:
+        - punnet
+
+    ### PORTAINER ###
+    portainer:
+      hostname: portainer
+      build:
+        context: ./portainer
+      volumes:
+        - ${PORTAINER_DATA_PATH}:/data
+        - /var/run/docker.sock:/var/run/docker.sock
+      networks:
+        - punnet

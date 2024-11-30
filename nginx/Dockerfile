@@ -1,9 +1,5 @@
-ARG NGINX_VERSION=${NGINX_VERSION}
+ARG NGINX_VERSION=alpine
 FROM nginx:${NGINX_VERSION}
-
-LABEL maintainer="Abdelrahman Omran <me@omranic.com>"
-
-COPY ./nginx.conf /etc/nginx/nginx.conf
 
 ARG PHP_UPSTREAM_PORT=${PHP_UPSTREAM_PORT}
 ARG PHP_UPSTREAM_CONTAINER=${PHP_UPSTREAM_CONTAINER}

@@ -1,7 +1,5 @@
-ARG PHP_VERSION=${PHP_VERSION}
+ARG PHP_VERSION=fpm
 FROM php:${PHP_VERSION}
-
-LABEL maintainer="Abdelrahman Omran <me@omranic.com>"
 
 # Set Environment Variables
 ENV DEBIAN_FRONTEND noninteractive
@@ -12,10 +10,11 @@ ENV TZ ${TZ}
 
 RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
 
-COPY ./php.ini /usr/local/etc/php/php.ini
-COPY ./xdebug.ini /usr/local/etc/php/xdebug.ini
-COPY ./www.conf /usr/local/etc/php-fpm.d/www.conf
-COPY ./.bashrc /root/.bashrc
+COPY ./.internal/.gitignore_global /root/.gitignore_global
+COPY ./.internal/.gitconfig /root/.gitconfig
+COPY ./.internal/auth.json /root/.composer/
+COPY ./.internal/.bashrc /root/.bashrc
+COPY ./.internal/.ssh/ /root/.ssh/
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends locales\
