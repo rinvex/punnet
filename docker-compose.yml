@@ -123,3 +123,36 @@ services:
         - /var/run/docker.sock:/var/run/docker.sock
       networks:
         - punnet
+
+    ### PROMETHEUS ###
+    prometheus:
+      hostname: prometheus
+      build:
+        context: ./prometheus
+        args:
+          - PROMETHEUS_VERSION=${PROMETHEUS_VERSION}
+      volumes:
+        - ${PROMETHEUS_CONFIG_PATH}:/etc/prometheus/
+        - ${PROMETHEUS_DATA_PATH}:/prometheus
+      networks:
+        - punnet
+#      ports:
+#        - ${PROMETHEUS_PORT}:9090
+#      labels:
+#        - dev.orbstack.domains=prometheus.local
+
+    ### GRAFANA ###
+    grafana:
+      hostname: grafana
+      build:
+        context: ./grafana
+        args:
+          - GRAFANA_VERSION=${GRAFANA_VERSION}
+      volumes:
+        - ${GRAFANA_DATA_PATH}:/var/lib/grafana
+      networks:
+        - punnet
+#      ports:
+#        - ${GRAFANA_PORT}:3000
+#      labels:
+#        - dev.orbstack.domains=grafana.local

@@ -1,0 +1,2 @@
+ARG PROMETHEUS_VERSION=latest
+FROM prom/prometheus:${PROMETHEUS_VERSION}
